@@ -1,20 +1,54 @@
 Question1 = {
-    ask: "What is longest event in Olympic swimming?",
-    answers: ["1600m Freestyle", "1650yd Freestyle", "Joe", "Chris"],
-    rightAnswer: "Weston"
+    ask: "How far are you allowed to kick underwater off of each wall in a race?",
+    answers: ["15yd", "15m", "10yd", "10m"],
+    rightAnswer: "15m",
+    image:`<img src="./assets/images/swim1.gif">`
 }
 Question2 = {
-    ask: "What is my middle name?",
-    answers: ["Cedrick", "James", "William", "David"],
-    rightAnswer: "Cedrick"
+    ask: "What is the oldest stroke?",
+    answers: ["Breastroke", "Backstroke", "Butterfly", "Freestyle"],
+    rightAnswer: "Breastroke",
+    image:`<img src="./assets/images/swim2.gif">`
 }
 Question3 = {
-    ask: "What is my last name?",
-    answers: ["Carpenter", "Doe", "Smith", "Miller"],
-    rightAnswer: "Carpenter"
+    ask: "What year did swimming become an Olympic sport?",
+    answers: ["1908", "1896", "1924", "1912"],
+    rightAnswer: "1908",
+    image:`<img src="./assets/images/swim3.gif">`
+}
+Question4 = {
+    ask: "Which team won the 2019 Men's NCAA Division I Swimming Championships?",
+    answers: ["Cal", "Texas", "Indiana", "NC State"],
+    rightAnswer: "Cal",
+    image:`<img src="./assets/images/swim4.gif">`
+}
+Question5 = {
+    ask: "Which female swimmer has the most gold medals?",
+    answers: ["Jenny Thompson", "Dara Torres", "Natalie Coughlin", "Tracy Caulkins"],
+    rightAnswer: "Jenny Thompson",
+    image:`<img src="./assets/images/swim5.jpg">`
+}
+Question6 = {
+    ask: "Who invented swim fins?",
+    answers: ["Benjamin Franklin", "C.P. Troppman", "David Armbruster", "Michael Phelps"],
+    rightAnswer: "Benjamin Franklin",
+    image:`<img src="./assets/images/swim6.gif">`
+}
+Question7 = {
+    ask: "How long is a standard Olympic-size pool?",
+    answers: ["50m", "50yd", "25yd", "25m"],
+    rightAnswer: "50m",
+    image:`<img src="./assets/images/swim7.gif">`
+}
+Question8 = {
+    ask: "What is the fastest 50 yard freestyle time?",
+    answers: ["17.63 seconds", "18.11 seconds", "20.91 seconds","21.04 seconds"],
+    rightAnswer: "17.63 seconds",
+    image:`<img src="./assets/images/swim8.gif">`
 }
 
-var questions = [Question1, Question2, Question3];
+
+var questions = [Question1, Question2, Question3, Question4, Question5, Question6, Question7, Question8];
 
 var qIndex;
 var numCorrect;
@@ -43,7 +77,7 @@ $(document).on('click', 'button', function () {
             $answer = $('<h3>').addClass('answer m-1').text(answer);
             $('.answers').prepend($answer);
         });
-        timeLeft = 3;
+        timeLeft = 10;
         $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
         intervalId = setInterval(function () {
             timeLeft--;
@@ -54,7 +88,10 @@ $(document).on('click', 'button', function () {
         }, 1000);
     }
 
-    const revealAnswer = () => {
+    askQuestion(qIndex);
+    $(document).on('click', '.answer', revealAnswer);
+
+    function revealAnswer() {
         clearInterval(intervalId);
         $('.answers').text(`The answer was ${question.rightAnswer}`);
         if ($(this).text() === question.rightAnswer) {
@@ -68,12 +105,12 @@ $(document).on('click', 'button', function () {
             numWrong++;
         }
         $('.answer').remove();
-        $('.image').append(`<img src="https://picsum.photos/200">`);
+        $('.image').append(question.image);
         qIndex++;
         if (qIndex < questions.length) {
-            setTimeout(function () { askQuestion(qIndex); }, 1000);
+            setTimeout(function () { askQuestion(qIndex); }, 4000);
         } else {
-            setTimeout(GameOver, 1000);
+            setTimeout(GameOver, 4000);
         }
         function GameOver() {
             $(document).off("click", ".answer");
@@ -86,9 +123,6 @@ $(document).on('click', 'button', function () {
             $('.answers').append("<button>Play Again</button>");
         }
     }
-
-    askQuestion(qIndex);
-    $(document).on('click', '.answer', revealAnswer);
     
 });
 
