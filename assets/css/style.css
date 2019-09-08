@@ -1,0 +1,13 @@
+button{
+    background-color: grey;
+}
+
+.answer{
+    background-color:lightblue;
+}
+.answer:hover{
+    border:solid 5px black;
+}
+.answer:active{
+    background-color:green
+}

@@ -14,25 +14,72 @@ Question3 = {
     rightAnswer: "Carpenter"
 }
 
-var questions = [Question1, Question2, Question3]
+var questions = [Question1, Question2, Question3];
+
+var qIndex;
+var numCorrect;
+var numWrong;
+var numNull;
+var timeLeft = 30;
 
 
-shuffle(questions);
+$('.question').append("<button>Start</button>");
 
-questions.forEach(question => {
-    console.log(question.ask);
-    shuffle(question.answers);
-    question.answers.forEach(answer => {
-        console.log(answer);
+$(document).on('click', 'button', function (){
+
+    qIndex = 0;
+    numCorrect = 0;
+    numWrong = 0;
+    numNull = 0;
+    
+    shuffle(questions);
+    $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
+
+    const askQuestion = (i) => {
+        $('.answers').empty();
+        $('.image').empty();
+        question = questions[i];
+        $('.question').text(question.ask);
+        shuffle(question.answers);
+        question.answers.forEach(answer => {
+            $answer = $('<div>').addClass('answer').text(answer);
+            $('.answers').prepend($answer);
+        });
+    }
+
+    askQuestion(qIndex);
+
+    $(document).on('click', '.answer', function () {
+        $('.answers').text(`The answer was ${question.rightAnswer}`);
+        if ($(this).text() === question.rightAnswer) {
+            $('.question').text('Correct!');
+            numCorrect++;
+        } else {
+            $('.question').text('Wrong!');
+            numWrong++;
+        }
+        $('.answer').remove();
+        $('.image').append(`<img src="https://picsum.photos/200">`);
+        qIndex++;
+        if (qIndex < questions.length) {
+            setTimeout(function () { askQuestion(qIndex); }, 1000);
+        } else {
+            setTimeout(function () { GameOver(); }, 1000)
+        }
+
+        function GameOver() {
+            $(document).off( "click", ".answer" );
+            $('.image').empty();
+            $('.question').text('Good Job!');
+            $('.answers').append("<div> Correct Answers: " + numCorrect + "</div>");
+            $('.answers').append("<div> Wrong Answers: " + numWrong + "</div>");
+            $('.answers').append("<div> Unanswered: " + numNull + "</div>");
+            $('.answers').append("<button>Play Again</button>");
+
+        }
+
     });
-    console.log('The right answer is ' + question.rightAnswer);
 });
-
-
-
-
-
-
 
 // Fisher-Yates Shuffle
 function shuffle(array) {
@@ -53,10 +100,3 @@ function shuffle(array) {
     return array;
 }
 
-
-
-
-
-// for (let i = 0; i < questions.length; i++) {
-//     displayQuestion();  
-// }
