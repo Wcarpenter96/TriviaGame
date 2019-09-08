@@ -1,6 +1,6 @@
 Question1 = {
-    ask: "What is my first name?",
-    answers: ["Weston", "Bob", "Joe", "Chris"],
+    ask: "What is longest event in Olympic swimming?",
+    answers: ["1600m Freestyle", "1650yd Freestyle", "Joe", "Chris"],
     rightAnswer: "Weston"
 }
 Question2 = {
@@ -25,14 +25,13 @@ var timeLeft;
 $('.question').append("<button>Start</button>");
 
 $(document).on('click', 'button', function () {
-
+    
     qIndex = 0;
     numCorrect = 0;
     numWrong = 0;
     numNull = 0;
 
     shuffle(questions);
-
 
     const askQuestion = (i) => {
         $('.answers').empty();
@@ -41,7 +40,7 @@ $(document).on('click', 'button', function () {
         $('.question').text(question.ask);
         shuffle(question.answers);
         question.answers.forEach(answer => {
-            $answer = $('<div>').addClass('answer').text(answer);
+            $answer = $('<h3>').addClass('answer m-1').text(answer);
             $('.answers').prepend($answer);
         });
         timeLeft = 3;
@@ -55,11 +54,7 @@ $(document).on('click', 'button', function () {
         }, 1000);
     }
 
-    askQuestion(qIndex);
-    $(document).on('click', '.answer', revealAnswer);
-
-    function revealAnswer() {
-
+    const revealAnswer = () => {
         clearInterval(intervalId);
         $('.answers').text(`The answer was ${question.rightAnswer}`);
         if ($(this).text() === question.rightAnswer) {
@@ -80,7 +75,6 @@ $(document).on('click', 'button', function () {
         } else {
             setTimeout(GameOver, 1000);
         }
-
         function GameOver() {
             $(document).off("click", ".answer");
             $('.answers').empty();
@@ -90,10 +84,12 @@ $(document).on('click', 'button', function () {
             $('.answers').append("<div> Wrong Answers: " + numWrong + "</div>");
             $('.answers').append("<div> Unanswered: " + numNull + "</div>");
             $('.answers').append("<button>Play Again</button>");
-
         }
-
     }
+
+    askQuestion(qIndex);
+    $(document).on('click', '.answer', revealAnswer);
+    
 });
 
 // Fisher-Yates Shuffle

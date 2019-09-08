@@ -1,13 +1,41 @@
-button{
-    background-color: grey;
+body {
+    background-image: url("../images/poolFloor.jpg");
+    font-family: 'Handlee', cursive;
+    color:rgb(255, 255, 255);
+}
+.container{
+    background-color:rgba(105, 206, 246, 0.787);
 }
 
-.answer{
-    background-color:lightblue;
+div{
+    border-radius:10px;
+    margin:5px;
 }
-.answer:hover{
-    border:solid 5px black;
+
+h3{
+    border-radius:10px;
+    padding:5px;
 }
-.answer:active{
-    background-color:green
+
+button {
+    background-color: white;
+    border:none;
+    border-radius:10px;
+    color:rgb(86, 125, 138);
+}
+button:hover{
+    opacity:0.8;
+}
+
+.answer {
+    background-color: rgb(86, 125, 138);
+}
+
+.answer:hover {
+    opacity:0.8;
+    cursor: pointer;
+}
+
+.answer:active {
+    background-color: rgb(255, 255, 255)
 }
