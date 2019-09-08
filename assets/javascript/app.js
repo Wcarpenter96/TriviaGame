@@ -20,20 +20,19 @@ var qIndex;
 var numCorrect;
 var numWrong;
 var numNull;
-var timeLeft = 30;
-
+var timeLeft;
 
 $('.question').append("<button>Start</button>");
 
-$(document).on('click', 'button', function (){
+$(document).on('click', 'button', function () {
 
     qIndex = 0;
     numCorrect = 0;
     numWrong = 0;
     numNull = 0;
-    
+
     shuffle(questions);
-    $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
+
 
     const askQuestion = (i) => {
         $('.answers').empty();
@@ -45,15 +44,30 @@ $(document).on('click', 'button', function (){
             $answer = $('<div>').addClass('answer').text(answer);
             $('.answers').prepend($answer);
         });
+        timeLeft = 3;
+        $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
+        intervalId = setInterval(function () {
+            timeLeft--;
+            $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
+            if(timeLeft === 0){
+                revealAnswer();
+            }
+        }, 1000);
     }
 
     askQuestion(qIndex);
+    $(document).on('click', '.answer', revealAnswer);
 
-    $(document).on('click', '.answer', function () {
+    function revealAnswer() {
+
+        clearInterval(intervalId);
         $('.answers').text(`The answer was ${question.rightAnswer}`);
         if ($(this).text() === question.rightAnswer) {
             $('.question').text('Correct!');
             numCorrect++;
+        } else if (timeLeft === 0) {
+            $('.question').text("Time's Up!");
+            numNull++;
         } else {
             $('.question').text('Wrong!');
             numWrong++;
@@ -64,11 +78,12 @@ $(document).on('click', 'button', function (){
         if (qIndex < questions.length) {
             setTimeout(function () { askQuestion(qIndex); }, 1000);
         } else {
-            setTimeout(function () { GameOver(); }, 1000)
+            setTimeout(GameOver, 1000);
         }
 
         function GameOver() {
-            $(document).off( "click", ".answer" );
+            $(document).off("click", ".answer");
+            $('.answers').empty();
             $('.image').empty();
             $('.question').text('Good Job!');
             $('.answers').append("<div> Correct Answers: " + numCorrect + "</div>");
@@ -78,7 +93,7 @@ $(document).on('click', 'button', function (){
 
         }
 
-    });
+    }
 });
 
 // Fisher-Yates Shuffle
