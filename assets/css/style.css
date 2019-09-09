@@ -1,22 +1,17 @@
+/* Elements */
 body {
     background-image: url("../images/poolFloor.jpg");
     font-family: 'Handlee', cursive;
     color:rgb(255, 255, 255);
 }
-.container{
-    background-color:rgba(105, 206, 246, 0.787);
-}
-
 div{
     border-radius:10px;
     margin:5px;
 }
-
 h3{
     border-radius:10px;
     padding:5px;
 }
-
 button {
     background-color: white;
     border:none;
@@ -27,15 +22,17 @@ button:hover{
     opacity:0.8;
 }
 
+/* Classes */
+.container{
+    background-color:rgba(105, 206, 246, 0.787);
+}
 .answer {
     background-color: rgb(86, 125, 138);
 }
-
 .answer:hover {
     opacity:0.8;
     cursor: pointer;
 }
-
 .answer:active {
     background-color: rgb(255, 255, 255)
 }

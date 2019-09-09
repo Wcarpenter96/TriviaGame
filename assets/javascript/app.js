@@ -1,3 +1,11 @@
+// Variables
+var qIndex;
+var numCorrect;
+var numWrong;
+var numNull;
+var timeLeft;
+
+// Arbitrarily ordered questions with their respective keys
 Question1 = {
     ask: "How far are you allowed to kick underwater off of each wall in a race?",
     answers: ["15yd", "15m", "10yd", "10m"],
@@ -46,27 +54,24 @@ Question8 = {
     rightAnswer: "17.63 seconds",
     image:`<img src="./assets/images/swim8.gif">`
 }
-
-
 var questions = [Question1, Question2, Question3, Question4, Question5, Question6, Question7, Question8];
 
-var qIndex;
-var numCorrect;
-var numWrong;
-var numNull;
-var timeLeft;
-
+// Setup
 $('.question').append("<button>Start</button>");
 
+// When User Clicks Start Button
 $(document).on('click', 'button', function () {
     
+    // RESET
     qIndex = 0;
     numCorrect = 0;
     numWrong = 0;
     numNull = 0;
 
+    // Shuffle function at end of script
     shuffle(questions);
 
+    // Asks the user the question, displays possible answers and begins timer countdown
     const askQuestion = (i) => {
         $('.answers').empty();
         $('.image').empty();
@@ -77,6 +82,7 @@ $(document).on('click', 'button', function () {
             $answer = $('<h3>').addClass('answer m-1').text(answer);
             $('.answers').prepend($answer);
         });
+        // Timer
         timeLeft = 10;
         $('.timer').text(`Time Remaining: ${timeLeft} Seconds`);
         intervalId = setInterval(function () {
@@ -89,8 +95,11 @@ $(document).on('click', 'button', function () {
     }
 
     askQuestion(qIndex);
-    $(document).on('click', '.answer', revealAnswer);
 
+    // When the user selects their answer
+    $(document).on('click', '.answer', revealAnswer);
+    
+    //Stops timer, checks user's answer, and displays correct answer with .gif
     function revealAnswer() {
         clearInterval(intervalId);
         $('.answers').text(`The answer was ${question.rightAnswer}`);
@@ -107,16 +116,24 @@ $(document).on('click', 'button', function () {
         $('.answer').remove();
         $('.image').append(question.image);
         qIndex++;
+        // Returns to askQuestion or proceeds to gameOver
         if (qIndex < questions.length) {
             setTimeout(function () { askQuestion(qIndex); }, 4000);
         } else {
-            setTimeout(GameOver, 4000);
+            setTimeout(gameOver, 4000);
         }
-        function GameOver() {
+        // Displays game results, generates play again button (triggers initial on "click" event)
+        function gameOver() {
             $(document).off("click", ".answer");
             $('.answers').empty();
             $('.image').empty();
-            $('.question').text('Good Job!');
+            if(numCorrect === questions.length){
+                $('.question').text('Perfect Score!');
+            }else if(numCorrect > questions.length / 2){
+                $('.question').text('Good Job!');
+            }else{
+                $('.question').text('Better Luck Next Time...');
+            }
             $('.answers').append("<div> Correct Answers: " + numCorrect + "</div>");
             $('.answers').append("<div> Wrong Answers: " + numWrong + "</div>");
             $('.answers').append("<div> Unanswered: " + numNull + "</div>");
